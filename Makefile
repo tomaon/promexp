@@ -1,7 +1,7 @@
 #
  ERLANG_HOME ?= /opt/erlang/release/latest
 
- REBAR ?= ./rebar3
+ REBAR ?= rebar
 
  ENV  =
  ENV += REBAR_CONFIG=rebar3.config
