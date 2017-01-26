@@ -108,22 +108,20 @@ see [dets:all/0](http://erlang.org/doc/man/dets.html#all-0)
 Type: Gauge  
 Flag: 16#0004 (default: off)  
 Label: kind=count|limit  
-see [ets:all/0](http://erlang.org/doc/man/ets.html#all-0)  
-see [erlang:system_info(ets_limit)](http://erlang.org/doc/man/erlang.html#system_info_ets_limit)  
+see [ets:all/0](http://erlang.org/doc/man/ets.html#all-0), [erlang:system_info(ets_limit)](http://erlang.org/doc/man/erlang.html#system_info_ets_limit)  
 
 + `beam_system_info_port`  
 Type: Gauge  
 Flag: 16#0008 (default: off)  
 Label: kind=count|limit  
-see [erlang:system_info(port_count)](http://erlang.org/doc/man/erlang.html#system_info_port_count)  
-see [erlang:system_info(port_limit)](http://erlang.org/doc/man/erlang.html#system_info_port_limit)  
+see [erlang:system_info(port_count)](http://erlang.org/doc/man/erlang.html#system_info_port_count),
+[erlang:system_info(port_limit)](http://erlang.org/doc/man/erlang.html#system_info_port_limit)  
 
 + `beam_system_info_process`  
 Type: Gauge  
 Flag: 16#0010 (default: off)  
 Label: kind=count|limit  
-see [erlang:system_info(process_count)](http://erlang.org/doc/man/erlang.html#system_info_process_count)  
-see [erlang:system_info(process_limit)](http://erlang.org/doc/man/erlang.html#system_info_process_limit)  
+see [erlang:system_info(process_count)](http://erlang.org/doc/man/erlang.html#system_info_process_count), [erlang:system_info(process_limit)](http://erlang.org/doc/man/erlang.html#system_info_process_limit)  
 
 ## License
 
