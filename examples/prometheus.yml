@@ -1,0 +1,13 @@
+scrape_configs:
+  - job_name: 'console'
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'beam'
+    scrape_interval: 5s
+    metrics_path: '/esi/promexp/metrics'
+#   params:
+#     'm': ['1']   # memory        1=16#0001
+#     's': ['989'] # statistics  989=16#03dd
+#     'i': ['0']   # system_info   0=16#0000
+    static_configs:
+      - targets: ['localhost:8090']
