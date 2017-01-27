@@ -38,7 +38,7 @@ metrics(SessionID, _Env, Input) ->
     H = [
          "Content-Encoding: gzip\r\n",
          "Content-Length: ", integer_to_list(size(B)), "\r\n",
-         "Content-Type: ", ?CONTENT_TYPE, "d\r\n",
+         "Content-Type: ", ?CONTENT_TYPE, "\r\n",
          "\r\n"
         ],
     ok = mod_esi:deliver(SessionID, H),
