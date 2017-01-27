@@ -2,9 +2,9 @@
 {application, promexp,
  [
   {description, "Prometheus exporter for Erlang/Elixir"},
-  {vsn, "0.1.0"},
+  {vsn, "0.1.1"},
   {included_applications, []},
-  {applications, [kernel,stdlib]},
+  {applications, [kernel, stdlib]},
   {maintainers, ["Tomohiko AONO"]},
   {licenses, ["Apache-2.0"]},
   {links, [{"Github", "https://github.com/tomaon/promexp"}]}

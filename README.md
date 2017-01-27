@@ -10,7 +10,7 @@ make all
 
 ## Example
 
-### erlang:
+### erlang: inets
 
 ```bash
 % make run
