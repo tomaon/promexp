@@ -1,7 +1,9 @@
 -module(promexp).
 
-%% -- public : cowboy-1.0 --
--export([init/3, handle/2, terminate/3]).
+%% -- public : cowboy --
+-export([init/2,           % 2.x
+         init/3, handle/2, % 1.x
+         terminate/3]).
 
 %% -- public : inets --
 -export([metrics/3]).
@@ -9,7 +11,18 @@
 %% -- internal --
 -define(CONTENT_TYPE, "application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited").
 
-%% == public : cowboy-1.0 ==
+%% == public : cowboy ==
+
+-spec init(term(), term()) -> {ok, term(), term()}.
+init(Req, State) ->
+    Q = cowboy_req:qs(Req),
+    R = cowboy_req:reply(200,
+                         #{
+                           <<"content-type">> => <<?CONTENT_TYPE>>
+                          },
+                         collect(to_proplists(binary_to_list(Q), "&")),
+                         Req),
+    {ok, R, State}.
 
 -spec init(term(), term(), term()) -> {ok, term(), term()}.
 init(_, Req, _Opts) ->

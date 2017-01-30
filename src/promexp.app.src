@@ -2,7 +2,7 @@
 {application, promexp,
  [
   {description, "Prometheus exporter for Erlang/Elixir"},
-  {vsn, "0.1.2"},
+  {vsn, "0.1.3"},
   {included_applications, []},
   {applications, [kernel, stdlib]},
   {maintainers, ["Tomohiko AONO"]},
