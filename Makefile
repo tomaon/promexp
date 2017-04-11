@@ -4,6 +4,7 @@
  REBAR ?= ./rebar3
 
  ENV  =
+ ENV += ERL_FLAGS="+A 10"
  ENV += REBAR_CONFIG=rebar3.config
  ENV += PATH=$(ERLANG_HOME)/bin:$(PATH)
 #ENV += DEBUG=1
@@ -11,7 +12,7 @@
  WORK = .rebar3
 
 #
-default: test
+default: compile
 
 #
 $(VERBOSE).SILENT:
@@ -28,8 +29,8 @@ clean: rm
 	for P in prod test; do $(ENV) $(REBAR) as $$P clean; done
 cleanall: rm
 	for P in prod test; do $(ENV) $(REBAR) as $$P clean --all; done
-distclean:
-	rm -rf $(WORK) rebar.lock
+distclean: rm
+	rm -rf $(WORK)
 
 rm: rm-autosave rm-dump rm-logs
 
@@ -42,7 +43,10 @@ rm-logs:
 
 test: rm-logs ct
 
+
+elvis:
+	elvis rock
+
 #
 run: build
-	$(ENV) erl -config examples/inets -pa $(WORK)/prod/lib/*/ebin -s inets
-
+	$(ENV) ERL_LIBS=$(WORK)/prod/lib erl -config examples/inets -s promexp -s inets 

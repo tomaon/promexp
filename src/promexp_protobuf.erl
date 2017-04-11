@@ -103,8 +103,8 @@ encode_uint64(FieldNumber, Value) ->
 -spec encode_fixed32(integer()) -> {ok, binary()}|{error, _}.
 encode_fixed32(Value)
   when is_integer(Value), ?RANGE(Value, ?UINT32_MIN, ?UINT32_MAX) ->
-    <<B1,B2,B3,B4>> = <<Value:32/integer>>,
-    {ok, <<B4,B3,B2,B1>>};
+    <<B1, B2, B3, B4>> = <<Value:32/integer>>,
+    {ok, <<B4, B3, B2, B1>>};
 encode_fixed32(_) ->
     {error, badarg}.
 
@@ -115,8 +115,8 @@ encode_fixed32(FieldNumber, Value) ->
 -spec encode_fixed64(integer()) -> {ok, binary()}|{error, _}.
 encode_fixed64(Value)
   when is_integer(Value), ?RANGE(Value, ?UINT64_MIN, ?UINT64_MAX) ->
-    <<B1,B2,B3,B4,B5,B6,B7,B8>> = <<Value:64/integer>>,
-    {ok, <<B8,B7,B6,B5,B4,B3,B2,B1>>};
+    <<B1, B2, B3, B4, B5, B6, B7, B8>> = <<Value:64/integer>>,
+    {ok, <<B8, B7, B6, B5, B4, B3, B2, B1>>};
 encode_fixed64(_) ->
     {error, badarg}.
 
@@ -127,8 +127,8 @@ encode_fixed64(FieldNumber, Value) ->
 -spec encode_sfixed32(integer()) -> {ok, binary()}|{error, _}.
 encode_sfixed32(Value)
   when is_integer(Value), ?RANGE(Value, ?INT32_MIN, ?INT32_MAX) ->
-    <<B1,B2,B3,B4>> = <<Value:32/signed>>,
-    {ok, <<B4,B3,B2,B1>>};
+    <<B1, B2, B3, B4>> = <<Value:32/signed>>,
+    {ok, <<B4, B3, B2, B1>>};
 encode_sfixed32(_) ->
     {error, badarg}.
 
@@ -139,8 +139,8 @@ encode_sfixed32(FieldNumber, Value) ->
 -spec encode_sfixed64(integer()) -> {ok, binary()}|{error, _}.
 encode_sfixed64(Value)
   when is_integer(Value), ?RANGE(Value, ?INT64_MIN, ?INT64_MAX) ->
-    <<B1,B2,B3,B4,B5,B6,B7,B8>> = <<Value:64/signed>>,
-    {ok, <<B8,B7,B6,B5,B4,B3,B2,B1>>};
+    <<B1, B2, B3, B4, B5, B6, B7, B8>> = <<Value:64/signed>>,
+    {ok, <<B8, B7, B6, B5, B4, B3, B2, B1>>};
 encode_sfixed64(_) ->
     {error, badarg}.
 
@@ -151,8 +151,8 @@ encode_sfixed64(FieldNumber, Value) ->
 -spec encode_float(float()) -> {ok, binary()}|{error, _}.
 encode_float(Value)
   when is_float(Value) ->
-    <<B1,B2,B3,B4>> = <<Value:32/float>>,
-    {ok, <<B4,B3,B2,B1>>};
+    <<B1, B2, B3, B4>> = <<Value:32/float>>,
+    {ok, <<B4, B3, B2, B1>>};
 encode_float(_) ->
     {error, badarg}.
 
@@ -163,8 +163,8 @@ encode_float(FieldNumber, Value) ->
 -spec encode_double(float()) -> {ok, binary()}|{error, _}.
 encode_double(Value)
   when is_float(Value) ->
-    <<B1,B2,B3,B4,B5,B6,B7,B8>> = <<Value:64/float>>,
-    {ok, <<B8,B7,B6,B5,B4,B3,B2,B1>>};
+    <<B1, B2, B3, B4, B5, B6, B7, B8>> = <<Value:64/float>>,
+    {ok, <<B8, B7, B6, B5, B4, B3, B2, B1>>};
 encode_double(_) ->
     {error, badarg}.
 
@@ -172,7 +172,7 @@ encode_double(_) ->
 encode_double(FieldNumber, Value) ->
     encode(encode_double, FieldNumber, 1, Value).
 
--spec encode_binary(binary()) -> {ok, binary()}|{err, _}.
+-spec encode_binary(binary()) -> {ok, binary()}|{error, _}.
 encode_binary(Value)
   when is_binary(Value), byte_size(Value) =< ?UINT32_MAX ->
     {ok, <<(encode_varint(size(Value), <<>>))/binary, Value/binary>>};
@@ -200,9 +200,9 @@ encode_varint(I)
   when I >= 0->
     encode_varint(I, <<>>);
 encode_varint(I) ->
-    <<S:1,B1:7,B2:7,B3:7,B4:7,B5:7,B6:7,B7:7,B8:7,B9:7>> = <<I:64/signed>>,
-    <<1:1,B9:7,1:1,B8:7,1:1,B7:7,1:1,B6:7,1:1,B5:7,
-      1:1,B4:7,1:1,B3:7,1:1,B2:7,1:1,B1:7,0:7,S:1>>.
+    <<S:1, B1:7, B2:7, B3:7, B4:7, B5:7, B6:7, B7:7, B8:7, B9:7>> = <<I:64/signed>>,
+    <<1:1, B9:7, 1:1, B8:7, 1:1, B7:7, 1:1, B6:7, 1:1, B5:7,
+      1:1, B4:7, 1:1, B3:7, 1:1, B2:7, 1:1, B1:7, 0:7, S:1>>.
 
 encode_varint(I, B)
   when I < 16#80 ->
