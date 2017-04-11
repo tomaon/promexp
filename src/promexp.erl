@@ -1,5 +1,8 @@
 -module(promexp).
 
+%% -- public --
+-export([start/0, stop/0]).
+
 %% -- public : cowboy --
 -export([init/2,           % 2.x
          init/3, handle/2, % 1.x
@@ -10,6 +13,16 @@
 
 %% -- internal --
 -define(CONTENT_TYPE, "application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited").
+
+%% == public ==
+
+-spec start() -> ok|{error, _}.
+start() ->
+    application:load(?MODULE).
+
+-spec stop() -> ok.
+stop() ->
+    ok.
 
 %% == public : cowboy ==
 
@@ -45,7 +58,7 @@ terminate(_Reason, _Req, _State) ->
 
 %% == public : inets ==
 
--spec metrics(term(), term(), string()) -> _.
+-spec metrics(term(), term(), string()) -> ok.
 metrics(SessionID, _Env, Input) ->
     B = zlib:gzip(collect(to_proplists(Input, ";"))),
     H = [
@@ -60,17 +73,21 @@ metrics(SessionID, _Env, Input) ->
 %% == internal ==
 
 collect(P) ->
-    L = [
-         {"m", 16#0001, fun promexp_collector_erts:collect_memory/1},
-         {"s", 16#03dd, fun promexp_collector_erts:collect_statistics/1},
-         {"i", 16#0000, fun promexp_collector_erts:collect_system_info/1}
-        ],
-    << <<(F(get_value_as_integer(K, P, D)))/binary>> || {K, D, F} <- L >>.
+    << <<(apply(M, F, [get_value_as_integer(K, P, D)|A]))/binary>> ||
+        {K, D, {M, F, A}} <- get_collector() >>.
+
+get_collector() ->
+    case lists:keyfind(collector, 1, application:get_all_env(?MODULE)) of
+        {_, L} ->
+            L;
+        false ->
+            []
+    end.
 
 get_value_as_integer(K, L, D) ->
     case lists:keyfind(K, 1, L) of
-        {K, V} ->
-            list_to_integer(V);
+        {_, T} when is_list(T) ->
+            list_to_integer(T);
         false ->
             D
     end.

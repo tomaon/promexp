@@ -1,11 +1,23 @@
 %% -*- erlang -*-
-{application, promexp,
- [
-  {description, "Prometheus exporter for Erlang/Elixir"},
-  {vsn, "0.1.3"},
-  {included_applications, []},
-  {applications, [kernel, stdlib]},
-  {maintainers, ["Tomohiko AONO"]},
-  {licenses, ["Apache-2.0"]},
-  {links, [{"Github", "https://github.com/tomaon/promexp"}]}
- ]}.
+{
+  application,
+  promexp,
+  [
+   {description, "Prometheus exporter for Erlang/Elixir"},
+   {vsn, "0.2.0"},
+   {registered, []},
+   {included_applications, []},
+   {applications, [kernel, stdlib]},
+   {env, [
+          {collector, [
+                       {"m", 16#0001, {promexp_collector_erts, collect_memory, []}},
+                       {"s", 16#03dd, {promexp_collector_erts, collect_statistics, []}},
+                       {"i", 16#0000, {promexp_collector_erts, collect_system_info, []}}
+                      ]}
+         ]},
+
+   {maintainers, ["Tomohiko AONO"]},
+   {licenses, ["Apache-2.0"]},
+   {links, [{"Github", "https://github.com/tomaon/promexp"}]}
+  ]
+}.
