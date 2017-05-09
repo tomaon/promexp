@@ -1,34 +1,9 @@
 -module(promexp_collector_erts).
 
+-include("internal.hrl").
+
 %% -- public --
 -export([collect_memory/1, collect_statistics/1, collect_system_info/1]).
-
-%% -- internal --
-
-%% Format version 0.0.4
-%%  https://github.com/prometheus/client_model/blob/master/metrics.proto
-
--define(NAME,             16#0a).
-
--define(TYPE,             16#18).
--define(TYPE_COUNTER,     16#00).
--define(TYPE_GAUGE,       16#01).
--define(TYPE_UNTYPED,     16#03).
-
--define(METRIC,           16#22).
--define(METRIC_LABELPAIR, 16#0a).
--define(METRIC_GAUGE,     16#12).
--define(METRIC_COUNTER,   16#1a).
--define(METRIC_UNTYPED,   16#2a).
-
--define(LABELPAIR_NAME,   16#0a).
--define(LABELPAIR_VALUE,  16#12).
-
--define(COUNTER_VALUE,    16#09).
-
--define(GAUGE_VALUE,      16#09).
-
--define(UNTYPED_VALUE,    16#09).
 
 %% == public ==
 
@@ -69,11 +44,18 @@ collect_system_info(Flag)
 %% == internal ==
 
 collect(I, L) ->
-    << <<(F())/binary>> || {K, F} <- L, I band K =/= 0>>.
+    collect(I, <<>>, L).
 
-encode_double(I) -> {ok, B} = promexp_protobuf:encode_double(I * 1.0), B.
+collect(_, B, []) ->
+    B;
+collect(I, B, [{K, F}|T]) when I band K =/= 0 ->
+    collect(I, <<B/binary, (F())/binary>>, T);
+collect(I, B, [_|T]) ->
+    collect(I, B, T).
 
-encode_double(K, L) -> {K, V} = lists:keyfind(K, 1, L), encode_double(V).
+encode_double(I) -> element(2, promexp_protobuf:encode_double(I * 1.0)).
+
+encode_double(K, L) -> encode_double(element(2, lists:keyfind(K, 1, L))).
 
 
 encode_memory() ->

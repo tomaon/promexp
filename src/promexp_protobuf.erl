@@ -12,6 +12,9 @@
          encode_float/1, encode_float/2, encode_double/1, encode_double/2,
          encode_binary/1, encode_binary/2]).
 
+%% -- internal --
+-define(RANGE(V, F, T), (V >= F andalso V =< T)).
+
 %% == public ==
 
 -spec encode_bool(boolean()) -> {ok, binary()}|{error, _}.

@@ -5,6 +5,7 @@
 
  ENV  =
  ENV += ERL_FLAGS="+A 10"
+ ENV += ERL_FLAGS="+K true"
  ENV += REBAR_CONFIG=rebar3.config
  ENV += PATH=$(ERLANG_HOME)/bin:$(PATH)
 #ENV += DEBUG=1
