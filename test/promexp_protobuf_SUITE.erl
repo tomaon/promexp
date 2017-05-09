@@ -1,6 +1,8 @@
 -module(promexp_protobuf_SUITE).
 
--include("internal_test.hrl").
+-include_lib("common_test/include/ct.hrl").
+
+-include("../src/internal.hrl").
 
 %% -- callback: ct --
 -export([all/0, groups/0]).

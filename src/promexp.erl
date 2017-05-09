@@ -11,6 +11,9 @@
 %% -- public : inets --
 -export([metrics/3]).
 
+%% -- private --
+-export([profile/0]).
+
 %% -- internal --
 -define(CONTENT_TYPE, "application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited").
 
@@ -70,11 +73,31 @@ metrics(SessionID, _Env, Input) ->
     ok = mod_esi:deliver(SessionID, H),
     ok = mod_esi:deliver(SessionID, B).
 
+
+%% == private ==
+
+profile() ->
+    case eprof:profile(fun() -> collect([]) end) of
+        {ok, Value} -> % != profiling
+            ok = eprof:analyze(procs, [{sort, mfa}]),
+            Value
+    end.
+
 %% == internal ==
 
 collect(P) ->
-    << <<(apply(M, F, [get_value_as_integer(K, P, D)|A]))/binary>> ||
-        {K, D, {M, F, A}} <- get_collector() >>.
+    collect(P, <<>>, get_collector()).
+
+collect(_, B, []) ->
+    B;
+collect(P, B, [{K, D, X}|T]) ->
+    case get_value_as_integer(K, P, D) of
+        0 ->
+            collect(P, B, T);
+        I ->
+            {M, F, A} = X,
+            collect(P, <<B/binary, (apply(M, F, [I|A]))/binary>>, T)
+    end.
 
 get_collector() ->
     case lists:keyfind(collector, 1, application:get_all_env(?MODULE)) of
