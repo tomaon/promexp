@@ -4,7 +4,7 @@
   promexp,
   [
    {description, "Prometheus exporter for Erlang/Elixir"},
-   {vsn, "0.4.0"},
+   {vsn, "0.4.1"},
    {registered, []},
    {included_applications, []},
    {applications, [kernel, stdlib]},
@@ -14,10 +14,6 @@
                        {"s", 16#03dd, {promexp_collector_erts, collect_statistics, []}},
                        {"i", 16#0000, {promexp_collector_erts, collect_system_info, []}}
                       ]}
-         ]},
-
-   {maintainers, ["Tomohiko AONO"]},
-   {licenses, ["Apache-2.0"]},
-   {links, [{"Github", "https://github.com/tomaon/promexp"}]}
+         ]}
   ]
 }.
