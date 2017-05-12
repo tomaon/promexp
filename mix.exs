@@ -19,7 +19,14 @@ defmodule Promexp.Mixfile do
         :warnings_as_errors
       ],
 
+      deps: deps(),
       package: package(),
+    ]
+  end
+
+  defp deps do
+    [
+      {:ex_doc, "~> 0.15.1", only: :dev, runtime: false}
     ]
   end
 

@@ -1,3 +1,4 @@
+.mix/
 .rebar3/
 examples/data/
 erl_crash.dump
