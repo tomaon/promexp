@@ -1,4 +1,7 @@
 .mix/
 .rebar3/
+deps/
+doc/
 examples/data/
 erl_crash.dump
+*.tar

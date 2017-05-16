@@ -6,7 +6,7 @@ defmodule Promexp.Mixfile do
     [
       app: :promexp,
       description: "Prometheus exporter for Erlang/Elixir",
-      version: "0.4.1",
+      version: "0.4.2",
 
       compilers: [:erlang, :elixir, :app],
       build_path: ".mix",
@@ -39,8 +39,8 @@ defmodule Promexp.Mixfile do
       },
       files: [
         "LICENSE", "README.md", "examples",
-        "lib", "mix.exs",
-        "elvis.config", "rebar3.config", "src", "test"
+        "lib", "mix.exs", "test",
+        "elvis.config", "rebar.config", "src"
       ]
     ]
   end

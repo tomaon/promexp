@@ -14,7 +14,7 @@ make all
 
 ```bash
 % make run
-Eshell V8.2  (abort with ^G)
+Eshell V8.3  (abort with ^G)
 1> inets:services().
 [{httpc,<0.67.0>},{httpd,<0.70.0>}]
 2>

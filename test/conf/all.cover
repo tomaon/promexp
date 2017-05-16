@@ -1,7 +1,0 @@
-%% -*- erlang -*-
-
-{incl_mods, [
-             promexp,
-             promexp_collector_erts,
-             promexp_protobuf
-            ]}.
