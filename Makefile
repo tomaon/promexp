@@ -1,53 +1,46 @@
 #
+ ELIXIR_HOME ?= /opt/elixir/release/latest
  ERLANG_HOME ?= /opt/erlang/release/latest
 
- REBAR ?= ./rebar3
+#IEX ?= iex
+ MIX ?= mix
+ REBAR ?= rebar3
 
  ENV  =
- ENV += ERL_FLAGS="+A 10"
- ENV += ERL_FLAGS="+K true"
- ENV += REBAR_CONFIG=rebar3.config
- ENV += PATH=$(ERLANG_HOME)/bin:$(PATH)
-#ENV += DEBUG=1
+#ENV += MIX_ENV=prod
+ ENV += PATH=$(ELIXIR_HOME)/bin:$(ERLANG_HOME)/bin:$(PATH)
 
- WORK = .rebar3
+ WORK = .mix .rebar3
 
 #
 default: compile
 
 #
+.PHONY: test
+
 $(VERBOSE).SILENT:
 
-all: build
+all: deps.get compile
 
-build:
-	$(ENV) $(REBAR) as prod compile
+#run: compile
+#	$(ENV) $(IEX) -S mix
 
-compile ct dialyzer eunit shell:
-	$(ENV) $(REBAR) as test $@
+compile deps.get test:
+	$(ENV) $(MIX) $@
+clean: rm-autosave
+	$(ENV) $(MIX) $@
 
-clean: rm
-	for P in prod test; do $(ENV) $(REBAR) as $$P clean; done
-cleanall: rm
-	for P in prod test; do $(ENV) $(REBAR) as $$P clean --all; done
-distclean: rm
+dialyzer:
+	$(ENV) $(REBAR) $@
+
+distclean: rm-deps rm-doc rm-mix.lock
 	rm -rf $(WORK)
-
-rm: rm-autosave rm-dump rm-logs
 
 rm-autosave:
 	find . -name "*~" | xargs rm -f
-rm-dump:
-	rm -f erl_crash.dump
-rm-logs:
-	for D in cover logs; do rm -rf $(WORK)/test/$$D; done
-
-test: rm-logs ct
-
-
-elvis:
-	elvis rock
+rm-%:
+	rm -rf $*
 
 #
-run: build
-	$(ENV) ERL_LIBS=$(WORK)/prod/lib erl -config examples/inets -s promexp -s inets 
+run:
+	$(ENV) ERL_LIBS=$(firstword $(WORK))/dev/lib erl -config examples/inets -s promexp -s inets
