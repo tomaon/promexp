@@ -6,7 +6,7 @@ defmodule Promexp.Mixfile do
     [
       app: :promexp,
       description: "Prometheus exporter for Erlang/Elixir",
-      version: "0.4.3",
+      version: "0.5.0",
 
       compilers: [:erlang, :elixir, :app],
       build_path: ".mix",

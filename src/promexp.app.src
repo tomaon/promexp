@@ -4,7 +4,7 @@
   promexp,
   [
    {description, "Prometheus exporter for Erlang/Elixir"},
-   {vsn, "0.4.3"},
+   {vsn, "0.5.0"},
    {registered, []},
    {included_applications, []},
    {applications, [kernel, stdlib]},
